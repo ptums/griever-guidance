@@ -1,0 +1,17 @@
+{
+  "name": "@org/web",
+  "version": "0.0.1",
+  "private": true,
+  "nx": {
+    "name": "web"
+  },
+  "dependencies": {
+    "@griever/shared": "workspace:*",
+    "@griever/hooks": "workspace:*",
+    "@griever/api-client": "workspace:*"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.2.4",
+    "tailwindcss": "^4.2.4"
+  }
+}
