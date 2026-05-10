@@ -30,4 +30,6 @@ jobs:
 
       - run: pnpm install --frozen-lockfile
 
-      - run: pnpm nx affected -t typecheck build --base=remotes/origin/main --parallel=3
+      - uses: nrwl/nx-set-shas@v4
+
+      - run: pnpm nx affected -t typecheck build --base=$NX_BASE --head=$NX_HEAD --parallel=3
