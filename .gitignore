@@ -70,3 +70,5 @@ npm-debug.*
 web-build/
 cache/
 
+.cursorindexingignore
+.github/
