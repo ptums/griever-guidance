@@ -19,8 +19,6 @@ jobs:
           filter: tree:0
           fetch-depth: 0
 
-      - run: npx nx-cloud start-ci-run --distribute-on="3 linux-medium-js" --stop-agents-after="build"
-
       - uses: pnpm/action-setup@v4
         with:
           version: 9
@@ -33,6 +31,3 @@ jobs:
       - run: pnpm install --frozen-lockfile
 
       - run: pnpm nx affected -t typecheck build --base=remotes/origin/main --parallel=3
-
-      - run: npx nx-cloud fix-ci
-        if: always()
