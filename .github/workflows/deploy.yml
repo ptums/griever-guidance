@@ -8,8 +8,6 @@ on:
 permissions:
   actions: read
   contents: read
-  pull-requests: write
-  deployments: write
 
 jobs:
   deploy-api:
@@ -29,7 +27,6 @@ jobs:
 
       - run: pnpm install --frozen-lockfile
 
-      # Build lib dependencies so wrangler can resolve @griever/* imports
       - run: pnpm nx run-many -t build -p shared sms --parallel=3
 
       - run: pnpm exec wrangler deploy --config apps/api/wrangler.toml
@@ -49,7 +46,7 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
           cache: pnpm
 
       - run: pnpm install --frozen-lockfile
@@ -60,13 +57,10 @@ jobs:
         env:
           VITE_API_URL: ${{ secrets.VITE_API_URL }}
 
-      - uses: cloudflare/pages-action@v1
-        with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          projectName: griever-guidance-web
-          directory: apps/web/dist
-          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
+      - run: pnpm exec wrangler pages deploy apps/web/dist --project-name griever-guidance-web --branch main
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
 
   deploy-marketing:
     name: Deploy Marketing → Cloudflare Pages
@@ -80,7 +74,7 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
           cache: pnpm
 
       - run: pnpm install --frozen-lockfile
@@ -91,10 +85,7 @@ jobs:
         env:
           PUBLIC_WEB_URL: ${{ secrets.PUBLIC_WEB_URL }}
 
-      - uses: cloudflare/pages-action@v1
-        with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          projectName: griever-guidance-marketing
-          directory: apps/marketing/dist
-          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
+      - run: pnpm exec wrangler pages deploy apps/marketing/dist --project-name griever-guidance-marketing --branch main
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
